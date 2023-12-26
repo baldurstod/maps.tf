@@ -2,7 +2,6 @@
 	"name": "maps.tf",
 	"version": "0.0.1",
 	"description": "Source for maps.tf",
-	"main": "index.js",
 	"dependencies": {
 		"harmony-ui": "github:baldurstod/harmony-ui"
 	},
@@ -11,6 +10,6 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"rollup": "^4.8.0",
 		"rollup-plugin-copy": "^3.5.0",
-		"rollup-plugin-postcss": "^4.0.2"
+		"rollup-plugin-styler": "^1.8.0"
 	}
 }

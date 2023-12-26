@@ -105,35 +105,12 @@ function hide(htmlElement) {
 	display(htmlElement, false);
 }
 
-function styleInject(css, ref) {
-  if ( ref === void 0 ) ref = {};
-  var insertAt = ref.insertAt;
-
-  if (!css || typeof document === 'undefined') { return; }
-
-  var head = document.head || document.getElementsByTagName('head')[0];
-  var style = document.createElement('style');
-  style.type = 'text/css';
-
-  if (insertAt === 'top') {
-    if (head.firstChild) {
-      head.insertBefore(style, head.firstChild);
-    } else {
-      head.appendChild(style);
-    }
-  } else {
-    head.appendChild(style);
-  }
-
-  if (style.styleSheet) {
-    style.styleSheet.cssText = css;
-  } else {
-    style.appendChild(document.createTextNode(css));
-  }
+function styleInject(css) {
+	document.head.append(createElement('style', {textContent: css}));
 }
 
-var css_248z$4 = ".editor{\r\n\tflex: 1;\r\n\twidth:100%;\r\n\tbackground-color: red;\r\n\tdisplay: flex;\r\n}\r\n\r\n.editor > .offset{\r\n\theight: 100%;\r\n\tmin-width: 20px;\r\n\tflex:0;\r\n\tbackground-color: darkgray;\r\n\tfont-size: 0.7rem;\r\n}\r\n";
-styleInject(css_248z$4);
+var css$4 = ".editor{\r\n\tflex: 1;\r\n\twidth:100%;\r\n\tbackground-color: red;\r\n\tdisplay: flex;\r\n}\r\n\r\n.editor > .offset{\r\n\theight: 100%;\r\n\tmin-width: 20px;\r\n\tflex:0;\r\n\tbackground-color: darkgray;\r\n\tfont-size: 0.7rem;\r\n}\r\n";
+styleInject(css$4);
 
 class Editor {
 	#html;
@@ -198,8 +175,8 @@ class Editor {
 	}
 }
 
-var css_248z$3 = ".toolbar{\r\n\theight:2rem;\r\n\twidth:100%;\r\n\tbackground-color: blue;\r\n}\r\n";
-styleInject(css_248z$3);
+var css$3 = ".toolbar{\r\n\theight:2rem;\r\n\twidth:100%;\r\n\tbackground-color: blue;\r\n}\r\n";
+styleInject(css$3);
 
 class Statusbar {
 	#html;
@@ -228,8 +205,8 @@ class ControllerClass extends EventTarget {
 
 const Controller = new ControllerClass();
 
-var css_248z$2 = ".toolbar{\r\n\theight:5rem;\r\n\twidth:100%;\r\n\tbackground-color: chocolate;\r\n}\r\n";
-styleInject(css_248z$2);
+var css$2 = ".toolbar{\r\n\theight:5rem;\r\n\twidth:100%;\r\n\tbackground-color: chocolate;\r\n}\r\n";
+styleInject(css$2);
 
 class Toolbar {
 	#html;
@@ -260,11 +237,11 @@ class Toolbar {
 	}
 }
 
-var css_248z$1 = "html{\r\n\theight:100%;\r\n\twidth:100%;\r\n\t--font-size: 16px;\r\n\tfont-size: var(--font-size);\r\n}\r\nbody{\r\n\taccent-color: var(--accent-primary);\r\n\tcolor: var(--text-primary);\r\n\tscrollbar-color: var(--scrollbar-color) var(--scrollbar-bg);\r\n\tfont-family: helvetica;\r\n\tmargin:0rem;\r\n\toverflow: hidden;\r\n\tbackground-color: #000000;\r\n\theight:100%;\r\n\twidth:100%;\r\n\tdisplay: flex;\r\n\tjustify-content: center;\r\n\tbackground-color: var(--background-primary);\r\n\tflex-direction: column;\r\n}\r\n";
-styleInject(css_248z$1);
+var css$1 = "html{\r\n\theight:100%;\r\n\twidth:100%;\r\n\t--font-size: 16px;\r\n\tfont-size: var(--font-size);\r\n}\r\nbody{\r\n\taccent-color: var(--accent-primary);\r\n\tcolor: var(--text-primary);\r\n\tscrollbar-color: var(--scrollbar-color) var(--scrollbar-bg);\r\n\tfont-family: helvetica;\r\n\tmargin:0rem;\r\n\toverflow: hidden;\r\n\tbackground-color: #000000;\r\n\theight:100%;\r\n\twidth:100%;\r\n\tdisplay: flex;\r\n\tjustify-content: center;\r\n\tbackground-color: var(--background-primary);\r\n\tflex-direction: column;\r\n}\r\n";
+styleInject(css$1);
 
-var css_248z = "@media (prefers-color-scheme: light){\r\n\tbody{\r\n\t\t--background-primary: #fff;\r\n\t\t--background-secondary: #eee;\r\n\t\t--background-tertiary: #c8c8c8;\r\n\t\t--background-quaternary: #b1b1b1;\r\n\r\n\t\t--border-primary:  #cdcdcd;\r\n\t\t--border-secondary:  #cdcdcd;\r\n\r\n\t\t--text-primary: #1b1b1b;\r\n\t\t--text-secondary: #4e4e4e;\r\n\t\t--text-inactive: #9e9e9ea6;\r\n\t\t--text-link: #0069c2;\r\n\t\t--text-invert: #fff;\r\n\r\n\t\t--accent-primary: #0085f2;\r\n\r\n\t\t--scrollbar-bg: transparent;\r\n\t\t--scrollbar-color: rgba(0, 0, 0, 0.25);\r\n\t}\r\n}\r\n@media (prefers-color-scheme: dark){\r\n\tbody{\r\n\t\t--background-primary: #1b1b1b;\r\n\t\t--background-secondary: #101822;\r\n\t\t--background-tertiary: #343434;\r\n\t\t--background-quaternary: #4e4e4e;\r\n\r\n\t\t--border-primary:  #858585;\r\n\t\t--border-secondary:  #696969;\r\n\r\n\t\t--text-primary: #fff;\r\n\t\t--text-secondary: #cdcdcd;\r\n\t\t--text-inactive: #cdcdcda6;\r\n\t\t--text-link: #8cb4ff;\r\n\t\t--text-invert: #1b1b1b;\r\n\r\n\t\t--accent-primary: #5e9eff;\r\n\r\n\t\t--scrollbar-bg: transparent;\r\n\t\t--scrollbar-color: rgba(255, 255, 255, 0.25);\r\n\t}\r\n}\r\n";
-styleInject(css_248z);
+var css = "@media (prefers-color-scheme: light){\r\n\tbody{\r\n\t\t--background-primary: #fff;\r\n\t\t--background-secondary: #eee;\r\n\t\t--background-tertiary: #c8c8c8;\r\n\t\t--background-quaternary: #b1b1b1;\r\n\r\n\t\t--border-primary:  #cdcdcd;\r\n\t\t--border-secondary:  #cdcdcd;\r\n\r\n\t\t--text-primary: #1b1b1b;\r\n\t\t--text-secondary: #4e4e4e;\r\n\t\t--text-inactive: #9e9e9ea6;\r\n\t\t--text-link: #0069c2;\r\n\t\t--text-invert: #fff;\r\n\r\n\t\t--accent-primary: #0085f2;\r\n\r\n\t\t--scrollbar-bg: transparent;\r\n\t\t--scrollbar-color: rgba(0, 0, 0, 0.25);\r\n\t}\r\n}\r\n@media (prefers-color-scheme: dark){\r\n\tbody{\r\n\t\t--background-primary: #1b1b1b;\r\n\t\t--background-secondary: #101822;\r\n\t\t--background-tertiary: #343434;\r\n\t\t--background-quaternary: #4e4e4e;\r\n\r\n\t\t--border-primary:  #858585;\r\n\t\t--border-secondary:  #696969;\r\n\r\n\t\t--text-primary: #fff;\r\n\t\t--text-secondary: #cdcdcd;\r\n\t\t--text-inactive: #cdcdcda6;\r\n\t\t--text-link: #8cb4ff;\r\n\t\t--text-invert: #1b1b1b;\r\n\r\n\t\t--accent-primary: #5e9eff;\r\n\r\n\t\t--scrollbar-bg: transparent;\r\n\t\t--scrollbar-color: rgba(255, 255, 255, 0.25);\r\n\t}\r\n}\r\n";
+styleInject(css);
 
 class Application {
 	#editor = new Editor();
