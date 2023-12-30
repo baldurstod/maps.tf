@@ -1,7 +1,1 @@
-class ControllerClass extends EventTarget {
-	constructor() {
-		super();
-	}
-}
-
-export const Controller = new ControllerClass();
+export const Controller = new class extends EventTarget {}();
