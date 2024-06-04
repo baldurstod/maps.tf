@@ -1,4 +1,5 @@
-import { createElement } from 'harmony-ui';
+import { themeCSS } from 'harmony-css';
+import { createElement, documentStyle } from 'harmony-ui';
 import { PAGE_TYPE_EDITOR } from './constants.js';
 import { Controller } from './controller.js';
 import { MainContent } from './view/maincontent.js';
@@ -6,7 +7,10 @@ import { Statusbar } from './view/statusbar.js';
 import { Toolbar } from './view/toolbar.js';
 
 import applicationCSS from '../css/application.css';
-import '../css/vars.css';
+import htmlCSS from '../css/html.css';
+
+documentStyle(htmlCSS);
+documentStyle(themeCSS);
 
 class Application {
 	#htmlElement;
