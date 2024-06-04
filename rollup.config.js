@@ -1,12 +1,12 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import copy from 'rollup-plugin-copy';
-import styles from 'rollup-plugin-styler';
+import css from 'rollup-plugin-import-css';
 
 export default [
 	{
-		input: './src/js/application.js',
+		input: './src/client/js/application.js',
 		output: {
-			file: './dist/js/application.js',
+			file: './build/client/js/application.js',
 			format: 'esm'
 		},
 		plugins: [
@@ -15,12 +15,7 @@ export default [
 				TESTING: isDev,
 			}),*/
 			//isProduction ? del({targets: 'dist/*'}) : null,
-			styles({
-				mode: [
-					'inject',
-					(varname) => `import { styleInject } from 'harmony-ui';styleInject(${varname});`
-				],
-			}),
+			css(),
 			/*json({
 				compact: true,
 			}),*/
@@ -30,7 +25,7 @@ export default [
 			copy({
 				copyOnce: true,
 				targets: [
-					{src: 'src/index.html', dest: 'dist/'},
+					{src: 'src/client/index.html', dest: 'build/client/'},
 				]
 			}),
 		],

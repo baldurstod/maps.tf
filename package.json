@@ -10,6 +10,6 @@
 		"@rollup/plugin-terser": "^0.4.4",
 		"rollup": "^4.8.0",
 		"rollup-plugin-copy": "^3.5.0",
-		"rollup-plugin-styler": "^1.8.0"
+		"rollup-plugin-import-css": "^3.5.0"
 	}
 }
