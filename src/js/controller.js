@@ -1,1 +1,1 @@
-export const Controller = new class extends EventTarget {}();
+export const Controller = new EventTarget();
