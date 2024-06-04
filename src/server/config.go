@@ -1,7 +1,7 @@
 package main
 
 type Config struct {
-	HTTP      HTTP `json:"http"`
+	HTTP HTTP `json:"http"`
 }
 
 type HTTP struct {

@@ -5,10 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"io/fs"
 	"log"
+	"maps.tf"
 	"net/http"
 	"os"
 	"strconv"
-	"maps.tf"
+	"strings"
 	"time"
 )
 
@@ -45,7 +46,18 @@ func initEngine(config HTTP) *gin.Engine {
 		useFS = os.DirFS("build/client")
 	}
 
+	r.Use(rewriteURL(r))
 	r.StaticFS("/", http.FS(useFS))
 
 	return r
+}
+
+func rewriteURL(r *gin.Engine) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, "/@") {
+			c.Request.URL.Path = "/"
+			r.HandleContext(c)
+		}
+		c.Next()
+	}
 }
