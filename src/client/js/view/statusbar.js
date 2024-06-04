@@ -3,20 +3,20 @@ import { createElement } from 'harmony-ui';
 import '../../css/statusbar.css';
 
 export class Statusbar {
-	#html;
+	#htmlElement;
 	constructor() {
 	}
 
 	#initHTML() {
-		this.#html = createElement('div', {
+		this.#htmlElement = createElement('div', {
 			class: 'statusbar',
 			innerText: 'this is the statusbar',
 		})
-		return this.#html;
+		return this.#htmlElement;
 
 	}
 
-	get html() {
-		return this.#html ?? this.#initHTML();
+	get htmlElement() {
+		return this.#htmlElement ?? this.#initHTML();
 	}
 }

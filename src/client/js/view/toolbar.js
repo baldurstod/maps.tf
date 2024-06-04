@@ -4,30 +4,22 @@ import { Controller } from '../controller';
 import '../../css/toolbar.css';
 
 export class Toolbar {
-	#html;
+	#htmlElement;
 	constructor() {
 	}
 
 	#initHTML() {
-		this.#html = createElement('div', {
+		this.#htmlElement = createElement('div', {
 			class: 'toolbar',
 			innerText: 'this is the toolbar',
 			childs: [
-				createElement('div', {
-					class: 'button',
-					innerText: 'new file',
-					events: {
-						click: () => Controller.dispatchEvent(new CustomEvent('createnewfile')),
-					},
-				})
-
 			],
 		})
-		return this.#html;
+		return this.#htmlElement;
 
 	}
 
-	get html() {
-		return this.#html ?? this.#initHTML();
+	get htmlElement() {
+		return this.#htmlElement ?? this.#initHTML();
 	}
 }
