@@ -1,4 +1,4 @@
-import { vec4 } from 'gl-matrix';
+import { vec2, vec4 } from 'gl-matrix';
 import { Camera, Scene, GraphicsEvents, GRAPHICS_EVENT_TICK, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, ORTHOGRAPHIC_CAMERA, Manipulator } from 'harmony-3d';
 import { createElement } from 'harmony-ui';
 
@@ -8,8 +8,9 @@ export class Editor {
 	#htmlElement;
 	#htmlCanvas;
 	#scene;
-	#views = new Set();
+	#views = [];
 	#manipulator;
+	#split = vec2.fromValues(0.75, 0.75);
 	constructor() {
 		this.#htmlCanvas = createElement('canvas');
 		this.#scene = new Scene();
@@ -21,10 +22,10 @@ export class Editor {
 		camera.nearPlane = 0.1;
 		camera.verticalFov = 5;
 
-		this.#views.add(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'front'}));
-		this.#views.add(new EditorView({ viewport: [0, 0.5, 0.5, 0.5], type: 'top'}));
-		this.#views.add(new EditorView({ viewport: [0.5, 0.5, 0.5, 0.5], type: 'side'}));
-		this.#views.add(new EditorView({ viewport: [0.5, 0., 0.5, 0.5], type: '3d'}));
+		this.#views.push(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'front'}));
+		this.#views.push(new EditorView({ viewport: [0.5, 0., 0.5, 0.5], type: '3d'}));
+		this.#views.push(new EditorView({ viewport: [0, 0.5, 0.5, 0.5], type: 'top'}));
+		this.#views.push(new EditorView({ viewport: [0.5, 0.5, 0.5, 0.5], type: 'side'}));
 
 
 		this.#scene.addChild(new Sphere({radius: 10, segments: 12, rings: 12, material: new MeshFlatMaterial()}));
@@ -32,6 +33,26 @@ export class Editor {
 		this.#manipulator.size = 3;
 		//this.#manipulator.camera = this.#camera;
 		this.#scene.addChild(this.#manipulator);
+		this.#resizeViews();
+	}
+
+	#resizeViews() {
+		this.#views[0].viewport[2] = this.#split[0];
+		this.#views[0].viewport[3] = this.#split[1];
+
+		this.#views[1].viewport[0] = this.#split[0];
+		this.#views[1].viewport[2] = 1 - this.#split[0];
+		this.#views[1].viewport[3] = this.#split[1];
+
+		this.#views[2].viewport[1] = this.#split[1];
+		this.#views[2].viewport[2] = this.#split[0];
+		this.#views[2].viewport[3] = 1 - this.#split[1];
+
+		this.#views[3].viewport[0] = this.#split[0];
+		this.#views[3].viewport[1] = this.#split[1];
+		this.#views[3].viewport[2] = 1 - this.#split[0];
+		this.#views[3].viewport[3] = 1 - this.#split[1];
+
 	}
 
 	#initHTML() {
@@ -94,9 +115,13 @@ class EditorView {
 	#camera = new Camera();
 
 	constructor({ viewport = [0, 0, 1, 1], type = 'front' } = {}) {
-		ContextObserver.observe(GraphicsEvents, this.#camera);
+		//ContextObserver.observe(GraphicsEvents, this.#camera);
 		vec4.copy(this.#viewport, viewport);
 		this.setType(type);
+	}
+
+	get viewport() {
+		return this.#viewport;
 	}
 
 	setType(type) {
@@ -161,12 +186,23 @@ class EditorView {
 
 	setupRenderer(renderer) {
 		vec4.copy(viewport, this.#viewport);
+
+		let w = renderer._width / 2.0 * viewport[2];
+		let h = renderer._height / 2.0 * viewport[3];
+
+		this.#camera.left = -w;
+		this.#camera.right = w;
+		this.#camera.bottom = -h;
+		this.#camera.top = h;
+
 		viewport[0] *= renderer._width;
 		viewport[1] *= renderer._height;
 		viewport[2] *= renderer._width;
 		viewport[3] *= renderer._height;
 		renderer.viewport = viewport;
 		renderer.scissor = viewport;
+
+		this.#camera.aspectRatio = viewport[2] / viewport[3];
 	}
 
 }
