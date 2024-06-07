@@ -1,23 +1,41 @@
+import * as Harmony3D from 'harmony-3d';
 import { createElement } from 'harmony-ui';
 
-import '../../css/editor.css';
+import editorCSS from '../../css/editor.css';
 
 export class Editor {
 	#htmlElement;
-	#htmlOffset;
+	#htmlCanvas;
 	constructor() {
 	}
 
 	#initHTML() {
 		this.#htmlElement = createElement('div', {
-			class: 'editor',
+			attachShadow: { mode: 'closed' },
+			adoptStyle: editorCSS,
 			childs: [
-				'this is the toolbar'
-
+				createElement('div', {
+					class: 'view',
+					child: this.#htmlCanvas = createElement('canvas'),
+				}),
+				createElement('div', {
+					class: 'commands',
+				}),
 			],
 		})
 		this.#refresh();
+		this.#initRenderer();
 		return this.#htmlElement;
+	}
+
+	#initRenderer() {
+		this.renderer = Harmony3D.Graphics.initCanvas({
+			canvas : this.#htmlCanvas,
+			alpha : true,
+			autoResize : true,
+			preserveDrawingBuffer:true,
+			premultipliedAlpha:false
+		})
 	}
 
 	get htmlElement() {
