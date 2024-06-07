@@ -17,8 +17,6 @@ export class Editor {
 
 		let camera = new Camera();
 		camera.position = [0, -200, 0];
-		//let orbitCameraControl2 = new OrbitControl(camera, this.#htmlCanvas);
-		//orbitCameraControl2.target.position = [0, 0, 0];
 		camera.farPlane = 10000;
 		camera.nearPlane = 0.1;
 		camera.verticalFov = 5;
@@ -27,14 +25,11 @@ export class Editor {
 		this.#views.add(new EditorView({ viewport: [0, 0.5, 0.5, 0.5], type: 'top'}));
 		this.#views.add(new EditorView({ viewport: [0.5, 0.5, 0.5, 0.5], type: 'side'}));
 		this.#views.add(new EditorView({ viewport: [0.5, 0., 0.5, 0.5], type: '3d'}));
-		/*this.#views.add(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'side'}));
-		this.#views.add(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'top'}));
-		this.#views.add(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: '3d'}));*/
 
 
 		this.#scene.addChild(new Sphere({radius: 10, segments: 12, rings: 12, material: new MeshFlatMaterial()}));
 		this.#manipulator = new Manipulator();
-		this.#manipulator.size = 10;
+		this.#manipulator.size = 3;
 		//this.#manipulator.camera = this.#camera;
 		this.#scene.addChild(this.#manipulator);
 	}
@@ -74,7 +69,8 @@ export class Editor {
 			for (const view of this.#views) {
 				view.setupRenderer(renderer);
 				const camera = view.getCamera()
-				this.#scene.activeCamera = camera;
+				//this.#scene.activeCamera = camera;
+				this.#manipulator.resize(camera);
 				renderer.render(this.#scene, camera, event.detail.delta);
 			}
 
@@ -155,6 +151,7 @@ class EditorView {
 		//this.#camera.quaternion = [0, 1, 0, 1];
 		this.#camera.nearPlane = 0.1;
 		this.#camera.farPlane = 10000;
+		this.#camera.verticalFov = 50;
 		//this.#camera.orthoZoom = 10;
 	}
 
