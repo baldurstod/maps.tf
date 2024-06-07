@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"description": "Source for maps.tf",
 	"dependencies": {
+		"gl-matrix": "^3.4.3",
 		"harmony-css": "github:baldurstod/harmony-css",
 		"harmony-ui": "github:baldurstod/harmony-ui"
 	},
