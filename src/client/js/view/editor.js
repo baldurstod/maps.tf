@@ -1,18 +1,20 @@
 import { vec2, vec4 } from 'gl-matrix';
 import { Camera, Scene, GraphicsEvents, GRAPHICS_EVENT_TICK, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, ORTHOGRAPHIC_CAMERA, Manipulator } from 'harmony-3d';
 import { createElement } from 'harmony-ui';
+import 'harmony-ui/dist/define/harmony-splitter.js';
 
 import editorCSS from '../../css/editor.css';
 
 export class Editor {
 	#htmlElement;
 	#htmlCanvas;
+	#htmlHorizSplitter;
+	#htmlVertSplitter;
 	#scene;
 	#views = [];
 	#manipulator;
-	#split = vec2.fromValues(0.75, 0.75);
+	#split = vec2.create();
 	constructor() {
-		this.#htmlCanvas = createElement('canvas');
 		this.#scene = new Scene();
 		let ambientLight = this.#scene.addChild(new AmbientLight({ intensity: 1.0 }));
 
@@ -36,22 +38,23 @@ export class Editor {
 		this.#resizeViews();
 	}
 
-	#resizeViews() {
-		this.#views[0].viewport[2] = this.#split[0];
-		this.#views[0].viewport[3] = this.#split[1];
+	#resizeViews(split = vec2.fromValues(0.5, 0.5)) {
+		vec2.copy(this.#split, split);
+		this.#views[0].viewport[2] = split[0];
+		this.#views[0].viewport[3] = split[1];
 
-		this.#views[1].viewport[0] = this.#split[0];
-		this.#views[1].viewport[2] = 1 - this.#split[0];
-		this.#views[1].viewport[3] = this.#split[1];
+		this.#views[1].viewport[0] = split[0];
+		this.#views[1].viewport[2] = 1 - split[0];
+		this.#views[1].viewport[3] = split[1];
 
-		this.#views[2].viewport[1] = this.#split[1];
-		this.#views[2].viewport[2] = this.#split[0];
-		this.#views[2].viewport[3] = 1 - this.#split[1];
+		this.#views[2].viewport[1] = split[1];
+		this.#views[2].viewport[2] = split[0];
+		this.#views[2].viewport[3] = 1 - split[1];
 
-		this.#views[3].viewport[0] = this.#split[0];
-		this.#views[3].viewport[1] = this.#split[1];
-		this.#views[3].viewport[2] = 1 - this.#split[0];
-		this.#views[3].viewport[3] = 1 - this.#split[1];
+		this.#views[3].viewport[0] = split[0];
+		this.#views[3].viewport[1] = split[1];
+		this.#views[3].viewport[2] = 1 - split[0];
+		this.#views[3].viewport[3] = 1 - split[1];
 
 	}
 
@@ -62,7 +65,50 @@ export class Editor {
 			childs: [
 				createElement('div', {
 					class: 'view',
-					child: this.#htmlCanvas,
+					childs: [
+						this.#htmlCanvas = createElement('canvas'),
+						createElement('div', {
+							class: 'splitters',
+							childs: [
+								this.#htmlHorizSplitter = createElement('harmony-splitter', {
+									attributes: {
+										orientation: 'horizontal',
+									},
+									events: {
+										change: event => this.#horizSplit(event.detail.value),
+									},
+									childs: [
+										createElement('div', {
+											slot: '1',
+											class: 'panel',
+										}),
+										createElement('div', {
+											slot: '2',
+											class: 'panel',
+										}),
+									],
+								}),
+								this.#htmlVertSplitter = createElement('harmony-splitter', {
+									attributes: {
+										orientation: 'vertical',
+									},
+									events: {
+										change: event => this.#vertSplit(event.detail.value),
+									},
+									childs: [
+										createElement('div', {
+											slot: '1',
+											class: 'panel',
+										}),
+										createElement('div', {
+											slot: '2',
+											class: 'panel',
+										}),
+									],
+								}),
+							]
+						}),
+					],
 				}),
 				createElement('div', {
 					class: 'commands',
@@ -72,6 +118,13 @@ export class Editor {
 		this.#refresh();
 		this.#initRenderer();
 		return this.#htmlElement;
+	}
+
+	#horizSplit(value) {
+		this.#resizeViews([this.#split[0], 1 - value]);
+	}
+	#vertSplit(value) {
+		this.#resizeViews([value, this.#split[1]]);
 	}
 
 	#initRenderer() {

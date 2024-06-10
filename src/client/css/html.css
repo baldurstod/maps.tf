@@ -17,4 +17,6 @@ body{
 	display: flex;
 	justify-content: center;
 	background-color: var(--theme-background-primary);
+
+	--harmony-splitter-gutter-bg-color: var(--theme-main-bg-color-bright);
 }
