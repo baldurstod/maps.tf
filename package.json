@@ -5,7 +5,8 @@
 	"dependencies": {
 		"gl-matrix": "^3.4.3",
 		"harmony-css": "github:baldurstod/harmony-css",
-		"harmony-ui": "github:baldurstod/harmony-ui"
+		"harmony-ui": "github:baldurstod/harmony-ui",
+		"vdf": "github:baldurstod/vdf-js"
 	},
 	"devDependencies": {
 		"@rollup/plugin-node-resolve": "^15.2.3",
