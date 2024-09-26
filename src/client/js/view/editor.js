@@ -1,5 +1,5 @@
 import { vec2, vec4 } from 'gl-matrix';
-import { Camera, Scene, GraphicsEvents, GRAPHICS_EVENT_TICK, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, ORTHOGRAPHIC_CAMERA, Manipulator } from 'harmony-3d';
+import { Camera, Scene, GraphicsEvents, GRAPHICS_EVENT_TICK, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, Manipulator, CameraProjection } from 'harmony-3d';
 import { createElement } from 'harmony-ui';
 import 'harmony-ui/dist/define/harmony-splitter.js';
 
@@ -197,7 +197,7 @@ class EditorView {
 	}
 
 	#setFront() {
-		this.#camera.projectionType = ORTHOGRAPHIC_CAMERA;
+		this.#camera.setProjection(CameraProjection.Orthographic);
 		this.#camera.position = [0, -100, 0];
 		this.#camera.quaternion = [1, 0, 0, 1];
 		this.#camera.nearPlane = 0.1;
@@ -206,7 +206,7 @@ class EditorView {
 	}
 
 	#setTop() {
-		this.#camera.projectionType = ORTHOGRAPHIC_CAMERA;
+		this.#camera.setProjection(CameraProjection.Orthographic);
 		this.#camera.position = [0, 0, 100];
 		//this.#camera.quaternion = [1, 0, 0, 1];
 		this.#camera.nearPlane = 0.1;
@@ -215,7 +215,7 @@ class EditorView {
 	}
 
 	#setSide() {
-		this.#camera.projectionType = ORTHOGRAPHIC_CAMERA;
+		this.#camera.setProjection(CameraProjection.Orthographic);
 		this.#camera.position = [100, 0, 0];
 		this.#camera.quaternion = [0, 1, 0, 1];
 		this.#camera.nearPlane = 0.1;
@@ -224,7 +224,7 @@ class EditorView {
 	}
 
 	#set3D() {
-		//this.#camera.projectionType = ORTHOGRAPHIC_CAMERA;
+		this.#camera.setProjection(CameraProjection.Perspective);
 		this.#camera.position = [0, 0, 100];
 		//this.#camera.quaternion = [0, 1, 0, 1];
 		this.#camera.nearPlane = 0.1;
