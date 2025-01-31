@@ -1,12 +1,13 @@
 import { vec2, vec4 } from 'gl-matrix';
-import { Camera, Scene, GraphicsEvents, GRAPHICS_EVENT_TICK, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, Manipulator, CameraProjection } from 'harmony-3d';
-import { createElement } from 'harmony-ui';
-import 'harmony-ui/dist/define/harmony-splitter.js';
+import { Camera, Scene, GraphicsEvents, Graphics, Sphere, MeshFlatMaterial, OrbitControl, ContextObserver, AmbientLight, Manipulator, CameraProjection, GraphicsEvent } from 'harmony-3d';
+import { createElement, defineHarmonySplitter } from 'harmony-ui';
 
 import editorCSS from '../../css/editor.css';
 
+defineHarmonySplitter();
+
 export class Editor {
-	#htmlElement;
+	#htmlElement: HTMLElement;
 	#htmlCanvas;
 	#htmlHorizSplitter;
 	#htmlVertSplitter;
@@ -14,6 +15,7 @@ export class Editor {
 	#views = [];
 	#manipulator;
 	#split = vec2.create();
+
 	constructor() {
 		this.#scene = new Scene();
 		let ambientLight = this.#scene.addChild(new AmbientLight({ intensity: 1.0 }));
@@ -24,13 +26,13 @@ export class Editor {
 		camera.nearPlane = 0.1;
 		camera.verticalFov = 5;
 
-		this.#views.push(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'front'}));
-		this.#views.push(new EditorView({ viewport: [0.5, 0., 0.5, 0.5], type: '3d'}));
-		this.#views.push(new EditorView({ viewport: [0, 0.5, 0.5, 0.5], type: 'top'}));
-		this.#views.push(new EditorView({ viewport: [0.5, 0.5, 0.5, 0.5], type: 'side'}));
+		this.#views.push(new EditorView({ viewport: [0, 0, 0.5, 0.5], type: 'front' }));
+		this.#views.push(new EditorView({ viewport: [0.5, 0., 0.5, 0.5], type: '3d' }));
+		this.#views.push(new EditorView({ viewport: [0, 0.5, 0.5, 0.5], type: 'top' }));
+		this.#views.push(new EditorView({ viewport: [0.5, 0.5, 0.5, 0.5], type: 'side' }));
 
 
-		this.#scene.addChild(new Sphere({radius: 10, segments: 12, rings: 12, material: new MeshFlatMaterial()}));
+		this.#scene.addChild(new Sphere({ radius: 10, segments: 12, rings: 12, material: new MeshFlatMaterial() }));
 		this.#manipulator = new Manipulator();
 		this.#manipulator.size = 3;
 		//this.#manipulator.camera = this.#camera;
@@ -129,11 +131,11 @@ export class Editor {
 
 	#initRenderer() {
 		this.renderer = Graphics.initCanvas({
-			canvas : this.#htmlCanvas,
-			alpha : true,
-			autoResize : true,
-			preserveDrawingBuffer:true,
-			premultipliedAlpha:false
+			canvas: this.#htmlCanvas,
+			alpha: true,
+			autoResize: true,
+			preserveDrawingBuffer: true,
+			premultipliedAlpha: false
 		});
 		this.renderer.clearColor([0, 0, 0, 1]);
 
@@ -150,10 +152,10 @@ export class Editor {
 
 		}
 		this.renderer.play();
-		GraphicsEvents.addEventListener(GRAPHICS_EVENT_TICK, animate);
+		GraphicsEvents.addEventListener(GraphicsEvent.Tick, animate);
 	}
 
-	get htmlElement() {
+	getHTMLElement() {
 		return this.#htmlElement ?? this.#initHTML();
 	}
 

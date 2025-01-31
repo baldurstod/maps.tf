@@ -1,0 +1,3 @@
+interface Drill {
+	drill(): void;
+}
